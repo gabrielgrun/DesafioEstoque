@@ -1,5 +1,6 @@
 package br.com.zitrus.zitrus.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -36,12 +37,12 @@ public class ProductController {
 	}
 	
 	@GetMapping(path = {"/tipo/{type}"})
-	public ResponseEntity<String> findProductByType(@PathVariable Integer type){
+	public ResponseEntity<String> findProductByType(@PathVariable Integer type) throws SQLException{
 		return ResponseEntity.ok().body(productService.findProductByType(type));
 	}
 	
 	@GetMapping(path = {"/lucro/{id}"})
-	public ResponseEntity<String> findProfitByProduct(@PathVariable Integer id){
+	public ResponseEntity<String> findProfitByProduct(@PathVariable Integer id) throws SQLException{
 		return ResponseEntity.ok().body(productService.findProfitByProduct(id));
 	}
 

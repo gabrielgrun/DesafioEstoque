@@ -1,5 +1,6 @@
 package br.com.zitrus.zitrus.service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import br.com.zitrus.zitrus.dao.ConnectionManager;
+import br.com.zitrus.zitrus.dao.ProductDao;
 import br.com.zitrus.zitrus.model.Product;
 import br.com.zitrus.zitrus.repository.ProductRepository;
 
@@ -20,6 +23,7 @@ public class ProductService {
 	@Autowired
 	private ProductRepository repository;
 	private Gson gson = new GsonBuilder().serializeNulls().create();
+	private ProductDao dao = new ProductDao();
 
 	public List<Product> listAll() {
 		Iterable<Product> products = repository.findAll();
@@ -59,12 +63,12 @@ public class ProductService {
 				}).orElse(ResponseEntity.notFound().build());
 	}
 	
-	public String findProductByType(Integer type){
-		return gson.toJson(repository.findProductByType(type));
+	public String findProductByType(Integer type) throws SQLException{
+		return gson.toJson(dao.findProductByType(ConnectionManager.getConnection(), type));
 	}
 	
-	public String findProfitByProduct(Integer id){
-		return gson.toJson(repository.findProfitByProduct(id));
+	public String findProfitByProduct(Integer id) throws SQLException{
+		return gson.toJson(dao.findProfitByProduct(ConnectionManager.getConnection(), id));
 	}
 
 	private <E> List<E> toList(Iterable<E> iterable) {
