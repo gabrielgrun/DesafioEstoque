@@ -71,7 +71,7 @@ public class ProductService {
 		return gson.toJson(dao.findProfitByProduct(ConnectionManager.getConnection(), id));
 	}
 
-	private <E> List<E> toList(Iterable<E> iterable) {
+	protected <E> List<E> toList(Iterable<E> iterable) {
 		return StreamSupport.stream(iterable.spliterator(), false).collect(Collectors.toList());
 	}
 }

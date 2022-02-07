@@ -48,7 +48,7 @@ public class StockMovementService {
 		return ResponseEntity.ok().body(gson.toJson(stock));
 	}
 
-	private String validateBalance(Product product, StockMovement stock) {
+	protected String validateBalance(Product product, StockMovement stock) {
 		if(product.getQuantity() - stock.getQuantity() < 0) {
 			return NoBalanceException.MESSAGE;
 		}
