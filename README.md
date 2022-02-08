@@ -5,10 +5,13 @@
 
 # WEB
 1. Acessar a pasta web e abrir o prompt de comando.
+1. Rodar o comando `npm i`.
 1. Rodar o comando `npm run serve -- --port 3000`.
 1. Acessar http://localhost:3000
 
 # BANCO DE DADOS
 - Para visualizar os registros no banco, é possível abrir o console de administração do banco no link: `http://localhost:8080/h2`
+
+- No campo JDBC URL, colocar: `jdbc:h2:mem:zitrus`
 
 - O user name é `sa` e a senha `123`
