@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import br.com.zitrus.zitrus.exception.NoBalanceException;
 import br.com.zitrus.zitrus.model.Product;
@@ -42,6 +44,7 @@ public class StockMovementService {
 			}
 
 			stock.setDate(new Date());
+			stock.setProduct(product);
 			repository.save(stock);
 			productRepository.save(product);
 		}
@@ -50,7 +53,10 @@ public class StockMovementService {
 
 	protected String validateBalance(Product product, StockMovement stock) {
 		if(product.getQuantity() - stock.getQuantity() < 0) {
-			return NoBalanceException.MESSAGE;
+			JsonObject jsonObject = new JsonObject();
+			JsonPrimitive jsonPrimitive = new JsonPrimitive(NoBalanceException.MESSAGE);
+			jsonObject.add("msg",  jsonPrimitive);
+			return jsonObject.toString();
 		}
 		return null;
 	}

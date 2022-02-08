@@ -19,7 +19,7 @@ public class ProductDao {
 		String query = "SELECT "
 				+ "	PRODUCT.ID, PRODUCT.DESCRIPTION,  PRODUCT.QUANTITY, SUM(STOCKMOVEMENT.QUANTITY) AS SELL_QUANTITY "
 				+ "	FROM PRODUCT "
-				+ "	LEFT JOIN STOCKMOVEMENT ON (STOCKMOVEMENT.IDPRODUCT = PRODUCT.ID) " 
+				+ "	INNER JOIN STOCKMOVEMENT ON (STOCKMOVEMENT.IDPRODUCT = PRODUCT.ID) " 
 				+ "	WHERE STOCKMOVEMENT.TYPE = 1 "
 				+ "	AND PRODUCT.TYPE = ? "
 				+ "	GROUP BY PRODUCT.ID, PRODUCT.DESCRIPTION,  PRODUCT.QUANTITY";
@@ -32,8 +32,8 @@ public class ProductDao {
 				ProductSellQuantityDto product = new ProductSellQuantityDto();
 				product.setId(rs.getInt("ID"));
 				product.setDescription(rs.getString("DESCRIPTION"));
-				product.setSellQuantity(rs.getInt("QUANTITY"));
-				product.setQuantity(rs.getInt("SELL_QUANTITY"));
+				product.setQuantity(rs.getInt("QUANTITY"));
+				product.setSellQuantity(rs.getInt("SELL_QUANTITY"));
 				rows.add(product);
 			}
 			rs.close();
@@ -49,9 +49,10 @@ public class ProductDao {
 	{
 		Collection<ProductProfitDto> rows = new ArrayList<>();
 		String query = "SELECT "
-				+ " PRODUCT.ID, PRODUCT.DESCRIPTION, SUM(STOCKMOVEMENT.QUANTITY) AS SELL_QUANTITY, SUM(STOCKMOVEMENT.VALUE - PRODUCT.PRICE) AS PROFIT"
+				+ " PRODUCT.ID, PRODUCT.DESCRIPTION, SUM(STOCKMOVEMENT.QUANTITY) AS SELL_QUANTITY, "
+				+ " SUM((STOCKMOVEMENT.VALUE * STOCKMOVEMENT.QUANTITY) - (PRODUCT.PRICE * PRODUCT.QUANTITY)) AS PROFIT"
 				+ " FROM PRODUCT "
-				+ " LEFT JOIN STOCKMOVEMENT ON (STOCKMOVEMENT.IDPRODUCT = PRODUCT.ID)"
+				+ " INNER JOIN STOCKMOVEMENT ON (STOCKMOVEMENT.IDPRODUCT = PRODUCT.ID)"
 				+ " WHERE STOCKMOVEMENT.TYPE = 1"
 				+ " AND PRODUCT.ID = ?"
 				+ " GROUP BY PRODUCT.ID, PRODUCT.DESCRIPTION";

@@ -4,7 +4,7 @@
       <div class="card" style="margin-bottom: 16px">
         <div class="card-body">
           <h5 class="card-title">Cadastro de Produtos</h5>
-          <form id="register" @submit.prevent="save" @reset="clean">
+          <form id="register" @submit.prevent="save" @reset="clear">
             <div class="form-group">
               <label>Descrição</label>
               <input
@@ -47,7 +47,7 @@
                 v-model="product.quantity"
                 type="number"
                 class="form-control"
-                id="data"
+                id="quantity"
                 required
               />
             </div>
@@ -147,7 +147,7 @@ export default {
           .update(this.product)
           .then((response) => {
             if (response.status === 200) {
-              this.clean();
+              this.clear();
               this.updateTable(response.data);
             }
           })
@@ -159,7 +159,7 @@ export default {
           .save(this.product)
           .then((response) => {
             if (response.status === 200) {
-              this.clean();
+              this.clear();
               this.products.unshift(response.data);
             }
           })
@@ -204,7 +204,7 @@ export default {
         currency: "BRL",
       });
     },
-    clean() {
+    clear() {
       this.product.id = null;
       this.product.description = null;
       this.product.type = null;

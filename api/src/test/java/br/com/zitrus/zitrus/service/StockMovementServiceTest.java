@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
 import br.com.zitrus.zitrus.exception.NoBalanceException;
 import br.com.zitrus.zitrus.model.Product;
 import br.com.zitrus.zitrus.model.StockMovement;
@@ -37,6 +40,9 @@ public class StockMovementServiceTest {
 		StockMovement stock = new StockMovement();
 		product.setQuantity(1);
 		stock.setQuantity(2);
-		assertEquals(NoBalanceException.MESSAGE, service.validateBalance(product, stock));
+		JsonObject jsonObject = new JsonObject();
+		JsonPrimitive jsonPrimitive = new JsonPrimitive(NoBalanceException.MESSAGE);
+		jsonObject.add("msg",  jsonPrimitive);
+		assertEquals(jsonObject.toString(), service.validateBalance(product, stock));
 	}
 }
